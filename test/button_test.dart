@@ -21,6 +21,7 @@ final testTarget = ProviderScope(
 );
 void main() {
   testWidgets('first start', (WidgetTester tester) async {
+    // ▶
     await tester.pumpWidget(testTarget);
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
     expect(find.byIcon(Icons.pause), findsNothing);
@@ -32,6 +33,7 @@ void main() {
     expect(find.byIcon(Icons.replay), findsOneWidget);
   });
   testWidgets('pause', (WidgetTester tester) async {
+    // ▶⏸▶
     await tester.pumpWidget(testTarget);
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
     await tester.tap(find.byIcon(Icons.play_arrow));
@@ -48,6 +50,7 @@ void main() {
     expect(find.byIcon(Icons.pause), findsOneWidget);
   });
   testWidgets('replay only', (WidgetTester tester) async {
+    // ▶🔄
     await tester.pumpWidget(testTarget);
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
     await tester.tap(find.byIcon(Icons.play_arrow));
@@ -62,6 +65,7 @@ void main() {
     expect(find.byIcon(Icons.replay), findsNothing);
   });
   testWidgets('replay from pause', (WidgetTester tester) async {
+    // ▶⏸🔄
     await tester.pumpWidget(testTarget);
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
     await tester.tap(find.byIcon(Icons.play_arrow));
@@ -69,6 +73,11 @@ void main() {
     expect(find.byIcon(Icons.play_arrow), findsNothing);
     expect(find.byIcon(Icons.pause), findsOneWidget);
     expect(find.byIcon(Icons.replay), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.pause));
+    await tester.pump();
+    expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+    expect(find.byIcon(Icons.pause), findsNothing);
+    await tester.tap(find.byIcon(Icons.play_arrow));
     await tester.tap(find.byIcon(Icons.replay));
     await tester.pump();
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
