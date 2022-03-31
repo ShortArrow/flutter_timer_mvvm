@@ -10,7 +10,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_timer_mvvm/app.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
+  testWidgets('display appbar title', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(ProviderScope(
       child: App(),
