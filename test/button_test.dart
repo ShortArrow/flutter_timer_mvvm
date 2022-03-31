@@ -29,4 +29,12 @@ void main() {
     await tester.pump();
     expect(find.byIcon(Icons.play_arrow), findsNothing);
   });
+  // add test of xxx
+  // TODO: first start
+  // TODO: pause
+  // TODO: restart from pause
+  // TODO: refresh from pause
+  // TODO: refresh from finish
+  // TODO: normal finish
+  // TODO: finish from pause
 }
