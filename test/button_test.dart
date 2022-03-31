@@ -10,20 +10,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_timer_mvvm/view/button_widget.dart';
 
+final testTarget = ProviderScope(
+  child: MaterialApp(
+    home: Scaffold(
+      body: Consumer(builder: (context, ref, _) {
+        return ButtonsContainer();
+      }),
+    ),
+  ),
+);
 void main() {
   testWidgets('first start', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      ProviderScope(
-        child: MaterialApp(
-          home: Scaffold(
-            body: Consumer(builder: (context, ref, _) {
-              return ButtonsContainer();
-            }),
-          ),
-        ),
-      ),
-    );
-
+    await tester.pumpWidget(testTarget);
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
     expect(find.byIcon(Icons.pause), findsNothing);
     expect(find.byIcon(Icons.replay), findsNothing);
@@ -34,18 +32,7 @@ void main() {
     expect(find.byIcon(Icons.replay), findsOneWidget);
   });
   testWidgets('pause', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      ProviderScope(
-        child: MaterialApp(
-          home: Scaffold(
-            body: Consumer(builder: (context, ref, _) {
-              return ButtonsContainer();
-            }),
-          ),
-        ),
-      ),
-    );
-
+    await tester.pumpWidget(testTarget);
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
     await tester.tap(find.byIcon(Icons.play_arrow));
     await tester.pump();
@@ -61,18 +48,21 @@ void main() {
     expect(find.byIcon(Icons.pause), findsOneWidget);
   });
   testWidgets('replay only', (WidgetTester tester) async {
-    await tester.pumpWidget(
-      ProviderScope(
-        child: MaterialApp(
-          home: Scaffold(
-            body: Consumer(builder: (context, ref, _) {
-              return ButtonsContainer();
-            }),
-          ),
-        ),
-      ),
-    );
-
+    await tester.pumpWidget(testTarget);
+    expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.play_arrow));
+    await tester.pump();
+    expect(find.byIcon(Icons.play_arrow), findsNothing);
+    expect(find.byIcon(Icons.pause), findsOneWidget);
+    expect(find.byIcon(Icons.replay), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.replay));
+    await tester.pump();
+    expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+    expect(find.byIcon(Icons.pause), findsNothing);
+    expect(find.byIcon(Icons.replay), findsNothing);
+  });
+  testWidgets('replay from pause', (WidgetTester tester) async {
+    await tester.pumpWidget(testTarget);
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
     await tester.tap(find.byIcon(Icons.play_arrow));
     await tester.pump();
