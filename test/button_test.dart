@@ -11,7 +11,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_timer_mvvm/view/button_widget.dart';
 
 void main() {
-  testWidgets('disappear test of start button', (WidgetTester tester) async {
+  testWidgets('first start', (WidgetTester tester) async {
     await tester.pumpWidget(
       ProviderScope(
         child: MaterialApp(
@@ -25,12 +25,15 @@ void main() {
     );
 
     expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+    expect(find.byIcon(Icons.pause), findsNothing);
+    expect(find.byIcon(Icons.replay), findsNothing);
     await tester.tap(find.byIcon(Icons.play_arrow));
     await tester.pump();
     expect(find.byIcon(Icons.play_arrow), findsNothing);
+    expect(find.byIcon(Icons.pause), findsOneWidget);
+    expect(find.byIcon(Icons.replay), findsOneWidget);
   });
   // add test of xxx
-  // TODO: first start
   // TODO: pause
   // TODO: restart from pause
   // TODO: refresh from pause
