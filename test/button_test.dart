@@ -33,9 +33,34 @@ void main() {
     expect(find.byIcon(Icons.pause), findsOneWidget);
     expect(find.byIcon(Icons.replay), findsOneWidget);
   });
+  testWidgets('pause', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: Scaffold(
+            body: Consumer(builder: (context, ref, _) {
+              return ButtonsContainer();
+            }),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.play_arrow));
+    await tester.pump();
+    expect(find.byIcon(Icons.play_arrow), findsNothing);
+    expect(find.byIcon(Icons.pause), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.pause));
+    await tester.pump();
+    expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+    expect(find.byIcon(Icons.pause), findsNothing);
+    await tester.tap(find.byIcon(Icons.play_arrow));
+    await tester.pump();
+    expect(find.byIcon(Icons.play_arrow), findsNothing);
+    expect(find.byIcon(Icons.pause), findsOneWidget);
+  });
   // add test of xxx
-  // TODO: pause
-  // TODO: restart from pause
   // TODO: refresh from pause
   // TODO: refresh from finish
   // TODO: normal finish
