@@ -60,6 +60,31 @@ void main() {
     expect(find.byIcon(Icons.play_arrow), findsNothing);
     expect(find.byIcon(Icons.pause), findsOneWidget);
   });
+  testWidgets('replay only', (WidgetTester tester) async {
+    await tester.pumpWidget(
+      ProviderScope(
+        child: MaterialApp(
+          home: Scaffold(
+            body: Consumer(builder: (context, ref, _) {
+              return ButtonsContainer();
+            }),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.play_arrow));
+    await tester.pump();
+    expect(find.byIcon(Icons.play_arrow), findsNothing);
+    expect(find.byIcon(Icons.pause), findsOneWidget);
+    expect(find.byIcon(Icons.replay), findsOneWidget);
+    await tester.tap(find.byIcon(Icons.replay));
+    await tester.pump();
+    expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+    expect(find.byIcon(Icons.pause), findsNothing);
+    expect(find.byIcon(Icons.replay), findsNothing);
+  });
   // add test of xxx
   // TODO: refresh from pause
   // TODO: refresh from finish
