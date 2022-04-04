@@ -20,14 +20,35 @@ final testTarget = MaterialApp(
   ),
 );
 void main() {
-  testWidgets('finished', (WidgetTester tester) async {
-    // finished
-    await tester.pumpWidget(ProviderScope(
-      child: testTarget,
-      overrides: [buttonProvider.overrideWithValue(ButtonState.finished)],
-    ));
-    expect(find.byIcon(Icons.play_arrow), findsNothing);
-    expect(find.byIcon(Icons.pause), findsNothing);
-    expect(find.byIcon(Icons.replay), findsOneWidget);
-  });
+  for (var oneOfState in ButtonState.values) {
+    testWidgets('state: ${oneOfState.name}', (WidgetTester tester) async {
+      await tester.pumpWidget(ProviderScope(
+        child: testTarget,
+        overrides: [buttonProvider.overrideWithValue(oneOfState)],
+      ));
+      switch (oneOfState) {
+        case ButtonState.initial:
+          expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+          expect(find.byIcon(Icons.pause), findsNothing);
+          expect(find.byIcon(Icons.replay), findsNothing);
+          break;
+        case ButtonState.started:
+          expect(find.byIcon(Icons.play_arrow), findsNothing);
+          expect(find.byIcon(Icons.pause), findsOneWidget);
+          expect(find.byIcon(Icons.replay), findsOneWidget);
+          break;
+        case ButtonState.paused:
+          expect(find.byIcon(Icons.play_arrow), findsOneWidget);
+          expect(find.byIcon(Icons.pause), findsNothing);
+          expect(find.byIcon(Icons.replay), findsOneWidget);
+          break;
+        case ButtonState.finished:
+          expect(find.byIcon(Icons.play_arrow), findsNothing);
+          expect(find.byIcon(Icons.pause), findsNothing);
+          expect(find.byIcon(Icons.replay), findsOneWidget);
+          break;
+        default:
+      }
+    });
+  }
 }
